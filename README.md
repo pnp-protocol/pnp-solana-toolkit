@@ -6,55 +6,55 @@ A comprehensive TypeScript script to fetch all on-chain data about a Solana pred
 
 The script fetches the following data from the Solana blockchain:
 
-### 📊 Basic Information
+### Basic Information
 - Market address and ID
 - Question
 - Market version
 
-### 🔹 Status
+### Status
 - Resolved status
 - Resolvable status
 - Force resolve flag
 - Winning token ID
 - Has ended status
 
-### ⏰ Timing
+### Timing
 - Creation time
 - End time
 - Current status
 
-### 👥 Participants
+### Participants
 - Creator address
 - Creator fee treasury
 
-### 🪙 Token Information
+### Token Information
 - Collateral token mint
 - YES token mint
 - NO token mint
 
-### 💰 Supply & Liquidity
+### Supply & Liquidity
 - Initial liquidity
 - Current market reserves
 - YES token supply minted
 - NO token supply minted
 
-### 📈 Pricing (V2 Markets)
+### Pricing (V2 Markets)
 - YES/NO token prices
 - Multipliers (potential payout ratios)
 - UI-friendly supply values
 
-### 👛 User Balances (if wallet connected)
+### User Balances (if wallet connected)
 - Collateral balance
 - YES token balance
 - NO token balance
 
-### 📋 Settlement Criteria (if available)
+### Settlement Criteria (if available)
 - Category
 - Reasoning
 - Resolution sources
 - Settlement criteria
 
-### 🖼️ Metadata (if available)
+### Metadata (if available)
 - Market volume
 - Image
 - Initial liquidity
@@ -100,23 +100,23 @@ The script provides two types of output:
 
 ```
 ================================================================================
-📊 MARKET DATA SUMMARY
+MARKET DATA SUMMARY
 ================================================================================
 
-🔹 BASIC INFORMATION
+BASIC INFORMATION
 Market Address: 3LsfeB3RhQKJc2eHdEcb9XQzkF6eP9BFa6HTD6vvug9j
 Market ID: 12345
 Question: Will Bitcoin reach $100K by end of 2025?
 Version: 2
 
-🔹 STATUS
-Resolved: ❌
-Resolvable: ✅
-Force Resolve: ❌
+STATUS
+Resolved: NO
+Resolvable: YES
+Force Resolve: NO
 Winning Token: none
-Has Ended: ❌
+Has Ended: NO
 
-🔹 PRICING
+PRICING
 YES Price: 65.50%
 NO Price: 34.50%
 YES Multiplier: 1.53x
