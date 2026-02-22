@@ -22,3 +22,6 @@ Thumbs.db
 # Project specific
 market_data.json
 *.tsbuildinfo
+
+# Database
+data/*.db
