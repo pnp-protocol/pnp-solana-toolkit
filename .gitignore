@@ -25,3 +25,5 @@ market_data.json
 
 # Database
 data/*.db
+
+my.json
