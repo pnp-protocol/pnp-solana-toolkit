@@ -160,5 +160,5 @@ export interface CastVoteRequest {
 
 // ─── Constants ──────────────────────────────────────────────────────────────
 
-export const PNP_TOKEN_MINT = 'PNPfbmBnuKxPNQnRYELBUsijzgiYPCwEjpPBaUZeHpump';
+export const PNP_TOKEN_MINT = 'UVcu7kbVKW6Rs5PKzuwVSbm8ukvrWByS3hBXqHapump';
 export const PNP_TOKEN_DECIMALS = 6;
