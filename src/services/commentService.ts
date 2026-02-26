@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getSupabase } from '../db/index.js';
 import { AppError } from '../middleware/errorHandler.js';
-import { getAgentById } from './agentService.js';
+import { addReputation, getAgentById } from './agentService.js';
 import { getMarketById } from './marketService.js';
 import type { Comment, CommentWithAgent } from '../types/index.js';
 
@@ -31,6 +31,8 @@ export async function createComment(marketId: string, agentId: string, content: 
   });
 
   if (error) throw new AppError(500, `Failed to create comment: ${error.message}`);
+
+  await addReputation(agentId, 5);
 
   const { data: comment, error: fetchErr } = await sb
     .from('comments')
@@ -96,7 +98,11 @@ export async function deleteComment(commentId: string, agentId: string): Promise
   }
 
   const sb = getSupabase();
-  await sb.from('comments').delete().eq('id', commentId);
+  const { error } = await sb.from('comments').delete().eq('id', commentId);
+
+  if (error) throw new AppError(500, `Failed to delete comment: ${error.message}`);
+
+  await addReputation(comment.agent_id, -5);
 }
 
 export async function getCommentsByAgent(agentId: string): Promise<Comment[]> {

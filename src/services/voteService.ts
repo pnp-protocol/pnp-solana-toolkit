@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { getSupabase } from '../db/index.js';
 import { AppError } from '../middleware/errorHandler.js';
+import { addReputation } from './agentService.js';
 import { getMarketById } from './marketService.js';
 import type { Vote, VoteCounts, VoteType } from '../types/index.js';
 
@@ -25,10 +26,14 @@ export async function castVote(marketId: string, agentId: string, voteType: Vote
       return null; // toggled off
     }
 
-    await sb
+    const { error: updateErr } = await sb
       .from('votes')
       .update({ vote_type: voteType, created_at: new Date().toISOString() })
       .eq('id', (existing as Vote).id);
+
+    if (updateErr) throw new AppError(500, `Failed to cast vote: ${updateErr.message}`);
+
+    if (voteType === 'up') await addReputation(market.agent_id, 10);
 
     const { data: updated } = await sb
       .from('votes')
@@ -48,6 +53,8 @@ export async function castVote(marketId: string, agentId: string, voteType: Vote
   });
 
   if (error) throw new AppError(500, `Failed to cast vote: ${error.message}`);
+
+  if (voteType === 'up') await addReputation(market.agent_id, 10);
 
   const { data: vote } = await sb
     .from('votes')

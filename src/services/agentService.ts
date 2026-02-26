@@ -149,6 +149,30 @@ export async function incrementAgentMarkets(agentId: string, liquidityRaw: strin
     .eq('id', agentId);
 }
 
+/**
+ * Add or subtract reputation points. Applied only after successful actions.
+ * Score is clamped to a minimum of 0.
+ */
+export async function addReputation(agentId: string, delta: number): Promise<void> {
+  const sb = getSupabase();
+  const { data: agent } = await sb
+    .from('agents')
+    .select('reputation_score')
+    .eq('id', agentId)
+    .single();
+
+  if (!agent) return;
+
+  const newScore = Math.max(0, agent.reputation_score + delta);
+  await sb
+    .from('agents')
+    .update({
+      reputation_score: newScore,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', agentId);
+}
+
 export async function incrementResolvedMarkets(agentId: string): Promise<void> {
   const sb = getSupabase();
 

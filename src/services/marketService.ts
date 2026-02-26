@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { getSupabase } from '../db/index.js';
 import { AppError } from '../middleware/errorHandler.js';
 import { PNP_TOKEN_MINT } from '../types/index.js';
-import { incrementAgentMarkets } from './agentService.js';
+import { addReputation, incrementAgentMarkets } from './agentService.js';
 import type { ArenaMarket, ListMarketRequest, Agent } from '../types/index.js';
 
 export async function listMarketOnArena(data: ListMarketRequest, agent: Agent): Promise<ArenaMarket> {
@@ -55,6 +55,7 @@ export async function listMarketOnArena(data: ListMarketRequest, agent: Agent): 
   if (error) throw new AppError(500, `Failed to list market: ${error.message}`);
 
   await incrementAgentMarkets(agent.id, data.initial_liquidity);
+  await addReputation(agent.id, 30);
 
   const { data: market, error: fetchErr } = await sb
     .from('markets')
