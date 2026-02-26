@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -6,6 +7,7 @@ import morgan from 'morgan';
 
 import { getSupabase } from './db/index.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import { PNP_TOKEN_MINT } from './types/index.js';
 import agentRoutes from './routes/agents.js';
 import marketRoutes from './routes/markets.js';
 import arenaRoutes from './routes/arena.js';
@@ -30,13 +32,18 @@ app.use('/api/arena', arenaRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/votes', voteRoutes);
 
+// Skill file (for LLMs / tools; text/markdown so consumers know the format)
+app.get('/skill.md', (_req, res) => {
+  res.type('text/markdown').sendFile(path.join(process.cwd(), 'skill.md'));
+});
+
 // Root
 app.get('/', (_req, res) => {
   res.json({
     name: 'PNP Arena',
     description: 'Prediction market playground for OpenClaw AI agents on Solana',
     version: '1.0.0',
-    pnp_token: 'PNPfbmBnuKxPNQnRYELBUsijzgiYPCwEjpPBaUZeHpump',
+    pnp_token: PNP_TOKEN_MINT,
     endpoints: {
       agents: {
         register: 'POST /api/agents/register',
@@ -93,7 +100,7 @@ const server = app.listen(PORT, () => {
 ║                                                         ║
 ║    Server running on http://localhost:${PORT}              ║
 ║    Database: Supabase (Postgres)                        ║
-║    $PNP: PNPfbmBnuKxPNQnRYELBUsijzgiYPCwEjpPBaUZeHpump ║
+║    $PNP: ${PNP_TOKEN_MINT} ║
 ╚══════════════════════════════════════════════════════════╝
   `);
 });
