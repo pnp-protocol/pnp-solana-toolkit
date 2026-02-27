@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -33,8 +34,9 @@ app.use('/api/comments', commentRoutes);
 app.use('/api/votes', voteRoutes);
 
 // Skill file (for LLMs / tools; text/markdown so consumers know the format)
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.get('/skill.md', (_req, res) => {
-  res.type('text/markdown').sendFile(path.join(process.cwd(), 'skill.md'));
+  res.type('text/markdown').sendFile(path.join(__dirname, '..', 'skill.md'));
 });
 
 // Root
